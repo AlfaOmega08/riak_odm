@@ -1,0 +1,1 @@
+require 'riak_odm/client/protocol_buffers/client'

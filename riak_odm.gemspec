@@ -9,15 +9,16 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Francesco Boffa"]
   spec.email         = ["fra.boffa@gmail.com"]
   spec.description   = 'RiakOdm is an ODM (Object-Document Mapper) Framework for Riak, written in Ruby'
+  spec.summary       = 'TODO'
   spec.homepage      = "https://github.com/AlfaOmega08/riak_odm"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(spec|features)/})
-  spec.require_paths = ["lib"]
+  spec.require_paths = %w{lib, vendor}
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
-  spec.add_dependency "ruby-protobuf"
+  spec.add_development_dependency "rspec"
 end
