@@ -16,14 +16,12 @@ module RiakOdm
           raise RiakOdm::Errors::Connection
         end
 
-        def connect(host, port, timeout = 1.0)
+        def connect(host, port, timeout = 1)
           addr = Socket.getaddrinfo(host, nil)
 
           @sock = Socket.new(:INET, :STREAM, 0)
-          @sock.setsockopt(Socket::SOL_SOCKET, Socket::SO_RCVTIMEO, secs_to_timeval(timeout)) unless timeout.nil? or timeout.zero?
-
           begin
-            @sock.connect(Socket.pack_sockaddr_in(port, addr[0][3])).zero?
+            real_connect(@sock, addr[0][3], port, timeout)
           rescue
             false
           end
@@ -35,10 +33,13 @@ module RiakOdm
         end
 
         private
-        def secs_to_timeval(timeout)
-          secs = Integer(timeout)
-          usecs = Integer((timeout - secs) * 1_000_000)
-          [secs, usecs].pack('l_2')
+        def real_connect(sock, host, port, timeout)
+          begin
+            sock.connect_nonblock(Socket.pack_sockaddr_in(port, host))
+          rescue Errno::EINPROGRESS
+            resp = IO.select([sock], nil, nil, timeout.to_i)
+            raise Errno::ECONNREFUSED if resp.nil?
+          end
         end
 
         def send_message(number, message = '')
@@ -51,11 +52,21 @@ module RiakOdm
           @sock.recv
         end
 
-        def receive_response
+        def receive_response(timeout = 1.0)
+          if IO.select([@sock], nil, nil, timeout.to_i).nil?
+            raise RiakOdm::Errors::Timeout
+          end
+
           length = @sock.recv(4).unpack("N") - 1
           message_type = @sock.recv(1).ord
-          message = @sock.recv(length)
-          message
+
+          if length
+            message = @sock.recv(length)
+          else
+            message = ''
+          end
+
+          Messages.MessageClasses[message_type].parse message
         end
       end
     end

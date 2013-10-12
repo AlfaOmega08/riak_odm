@@ -79,6 +79,7 @@ describe RiakOdm::Client::ProtocolBuffers::Client do
     describe '#list_buckets' do
       it 'calls #send_message(LIST_BUCKETS_REQ)' do
         client.should_receive(:send_message).with(RiakOdm::Client::ProtocolBuffers::Messages::LIST_BUCKETS_REQ)
+        client.stub!(:receive_response).and_return(nil)
         client.list_buckets
       end
     end

@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Francesco Boffa"]
   spec.email         = ["fra.boffa@gmail.com"]
   spec.description   = 'RiakOdm is an ODM (Object-Document Mapper) Framework for Riak, written in Ruby'
-  spec.summary       = 'TODO'
+  spec.summary       = 'RiakOdm is an ODM (Object-Document Mapper) Framework for Riak, written in Ruby'
   spec.homepage      = "https://github.com/AlfaOmega08/riak_odm"
   spec.license       = "MIT"
 
