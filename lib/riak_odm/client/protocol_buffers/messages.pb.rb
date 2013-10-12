@@ -327,10 +327,10 @@ module RiakOdm
           optional :uint32, :num_found, 3
         end
 
-        MessageClasses = [
+        MESSAGE_CLASSES = [
             RpbErrorResp, nil, nil, nil, RpbGetClientIdResp, RpbSetClientIdReq, nil, nil,
             RpbGetServerInfoResp, RpbGetReq, RpbGetResp, RpbPutReq, RpbPutResp, RpbDelReq, nil, RpbListBucketsReq,
-            RpbListBucketsResp, RpbListKeysReq, RpbListBucketsResp, RpbGetBucketReq, RpbGetBucketResp, RpbSetBucketReq, nil, RpbMapRedReq,
+            RpbListBucketsResp, RpbListKeysReq, RpbListKeysResp, RpbGetBucketReq, RpbGetBucketResp, RpbSetBucketReq, nil, RpbMapRedReq,
             RpbMapRedResp, RpbIndexReq, RpbIndexResp, RpbSearchQueryReq, RpbSearchQueryResp
         ]
       end
