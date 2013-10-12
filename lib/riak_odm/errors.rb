@@ -1,0 +1,1 @@
+require 'riak_odm/errors/connection'
