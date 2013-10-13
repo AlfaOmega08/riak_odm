@@ -333,6 +333,11 @@ module RiakOdm
             RpbListBucketsResp, RpbListKeysReq, RpbListKeysResp, RpbGetBucketReq, RpbGetBucketResp, RpbSetBucketReq, nil, RpbMapRedReq,
             RpbMapRedResp, RpbIndexReq, RpbIndexResp, RpbSearchQueryReq, RpbSearchQueryResp
         ]
+
+        ONE = 0xFFFFFFFE
+        QUORUM = 0xFFFFFFFD
+        ALL = 0xFFFFFFFC
+        DEFAULT = 0xFFFFFFFB
       end
     end
   end
