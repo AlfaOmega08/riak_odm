@@ -35,6 +35,7 @@ module RiakOdm
 
         # Estabilishes a TCP connection to a given +host+ and +port+, using the optional +timeout+.
         # The connection is absolutely generic and it's not specific for Protocol Buffers use.
+        # The sock will have the Nagle Algorithm disabled.
         #
         # @example Connect to google.com
         #   client.connect('www.google.com', 80, 3)
@@ -44,6 +45,7 @@ module RiakOdm
           addr = Socket.getaddrinfo(host, nil)
 
           @sock = Socket.new(:INET, :STREAM, 0)
+          @sock.setsockopt(Socket::IPPROTO_TCP,Socket::TCP_NODELAY, 1)
           real_connect(@sock, addr[0][3], port, timeout || @timeout)
         end
 
