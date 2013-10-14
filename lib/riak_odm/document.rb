@@ -10,6 +10,7 @@ module RiakOdm
     end
 
     module ClassMethods
+      # Returns the bucket object for this Document.
       def bucket
         self._bucket ||= RiakOdm.cluster.bucket(self.bucket_name)
         self._bucket

@@ -11,6 +11,8 @@ require 'riak_odm/version'
 module RiakOdm
   include Config
 
+  # Returns the cluster object that is used throughout the session.
+  # When called for the first time, it will also connect to the Riak Cluster using configuration.
   def self.cluster
     if @cluster
       @cluster
