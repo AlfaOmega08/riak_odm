@@ -24,7 +24,7 @@ module RiakOdm
 
           @timeout = timeout
 
-          s = servers.delete(servers.sample)
+          s = servers.delete(servers.sample).with_indifferent_access
           begin
             return if connect(s[:host], s[:port])
             s = servers.delete(servers.sample)
@@ -173,6 +173,8 @@ module RiakOdm
           @sock.send packet, 0
         end
 
+        # @todo Performance testing shows that without IO.select this method is faster.
+        #   Need to find a better timeout solution...
         def receive_response(timeout = nil)
           if IO.select([@sock], nil, nil, timeout || @timeout).nil?
             raise RiakOdm::Errors::Timeout
