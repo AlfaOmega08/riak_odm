@@ -3,8 +3,9 @@ module RiakOdm
     attr_accessor :name
     attr_accessor :type
 
+    # Creates an Index object
     def initialize(_name, options = {})
-      @name = _name
+      @name = name
       @type = options[:type] || :binary
     end
   end

@@ -6,11 +6,10 @@ module RiakOdm
       include Components
 
       cattr_accessor :_bucket, :bucket_name
-      self.bucket_name = self.to_s.underscore.tableize.gsub('/', '_')
-
+      class_attribute :content_type
       attr_accessor :content
 
-      class_attribute :content_type
+      self.bucket_name = self.to_s.underscore.tableize.gsub('/', '_')
       self.content_type = 'application/json'
     end
 
