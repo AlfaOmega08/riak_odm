@@ -7,6 +7,41 @@ module RiakOdm
 
       cattr_accessor :_bucket, :bucket_name
       self.bucket_name = self.to_s.underscore.tableize.gsub('/', '_')
+
+      attr_accessor :content
+
+      class_attribute :content_type
+      self.content_type = 'application/json'
+    end
+
+    def initialize(attributes = {})
+      @local_content_type = attributes.delete(:content_type) || self.content_type || 'application/json'
+      @id = attributes.delete(:id) || ::SimpleUUID::UUID.new.to_guid
+
+      if @local_content_type == 'application/json'
+        @attributes = attributes
+      else
+        self.content = attributes[:content]
+      end
+
+      @new_record = true
+    end
+
+    def save
+      if new_record?
+        # Prevent sibling creation just because you
+        options = { if_none_match: true, content_type: @local_content_type }
+        self.class.bucket.store(@id, content_as_string, {}, {}, options)
+      end
+    end
+
+    private
+    def content_as_string
+      if @local_content_type == 'application/json'
+        @attributes.to_json
+      else
+        self.content
+      end
     end
 
     module ClassMethods

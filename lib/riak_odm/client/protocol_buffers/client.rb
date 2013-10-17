@@ -153,6 +153,15 @@ module RiakOdm
           receive_response
         end
 
+        def index_search(parameters = {})
+          parameters[:stream] = false
+
+          message = Messages::RpbIndexReq.new(parameters)
+          send_message(Messages::INDEX_REQ, message.serialize_to_string)
+
+          receive_response
+        end
+
         private
         def real_connect(sock, host, port, timeout)
           begin

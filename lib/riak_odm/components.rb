@@ -3,6 +3,8 @@ module RiakOdm
     extend ActiveSupport::Concern
 
     included do
+      include Indexes
+      include Persistence
       extend Finders
     end
   end

@@ -11,5 +11,16 @@ module RiakOdm
         self.bucket.find(id, options)
       end
     end
+
+    def find_by(index, options = {})
+      idx, value_or_range = index.first
+
+      raise unless self.indexes[idx]
+
+      suffix = self.indexes[idx].type == :integer ? '_int' : '_bin'
+      index_name = idx.to_s + suffix
+
+      RiakOdm::Criteria.new(self, index_name, value_or_range, options)
+    end
   end
 end
