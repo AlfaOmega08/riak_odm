@@ -31,7 +31,15 @@ module RiakOdm
         # Prevent sibling creation just because you
         options = { if_none_match: true, content_type: @local_content_type }
         self.class.bucket.store(@id, content_as_string, {}, {}, options)
+
+        @new_record = false
       end
+    end
+
+    def destroy
+      return if !persisted?
+      self.class.bucket.destroy(@id)
+      @destroyed = true
     end
 
     private

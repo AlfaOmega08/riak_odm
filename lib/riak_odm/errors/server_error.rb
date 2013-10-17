@@ -1,6 +1,6 @@
 module RiakOdm
   module Errors
-    class Connection < StandardError
+    class ServerError < StandardError
     end
   end
 end

@@ -26,10 +26,7 @@ module RiakOdm
 
       raise unless self.indexes[idx]
 
-      suffix = self.indexes[idx].type == :integer ? '_int' : '_bin'
-      index_name = idx.to_s + suffix
-
-      RiakOdm::Criteria.new(self, index_name, value_or_range, options)
+      RiakOdm::Criteria.new(self, self.indexes[idx].full_name, value_or_range, options)
     end
   end
 end

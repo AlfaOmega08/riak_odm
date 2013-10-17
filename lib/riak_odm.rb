@@ -1,3 +1,12 @@
+# encoding: utf-8
+
+require 'active_support/core_ext'
+require 'active_support/json'
+require 'active_support/inflector'
+require 'active_support/time_with_zone'
+require 'active_model'
+require 'simple_uuid'
+
 require 'riak_odm/bucket'
 require 'riak_odm/client'
 require 'riak_odm/cluster'

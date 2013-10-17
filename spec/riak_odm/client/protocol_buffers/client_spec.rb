@@ -2,6 +2,13 @@ require 'spec_helper'
 require 'socket'
 
 describe RiakOdm::Client::ProtocolBuffers::Client do
+  before(:each) do
+    # Undo generic stubbing done in spec_helper.rb
+    RiakOdm::Client::ProtocolBuffers::Client.any_instance.unstub(:initialize)
+    RiakOdm::Client::ProtocolBuffers::Client.any_instance.unstub(:send_message)
+    RiakOdm::Client::ProtocolBuffers::Client.any_instance.unstub(:receive_response)
+  end
+
   describe '#initialize' do
     it 'calls #connect' do
       RiakOdm::Client::ProtocolBuffers::Client.any_instance.should_receive(:connect).exactly(3).and_return(false)

@@ -58,5 +58,9 @@ module RiakOdm
 
       end
     end
+
+    def destroy(key)
+      @cluster.client.delete({ bucket: @name, key: key })
+    end
   end
 end

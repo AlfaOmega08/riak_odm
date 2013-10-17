@@ -7,7 +7,7 @@ module RiakOdm
     module ClassMethods
       # Loads the configuration from the <tt>config/riak_odm.yml</tt> YAML file, in case of Rails Application.
       def load_configuration
-        if Rails.root
+        if defined?(Rails)
           Configurability::Config.load(Rails.root.join('config/riak_odm.yml'))
         end
       end
