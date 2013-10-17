@@ -9,6 +9,13 @@ module RiakOdm
       @name = bucket_name
     end
 
+    # Returns all the keys in the bucket.
+    # @warning This method should never be called in production environments, in front of normal users.
+    #   It is one of the slowest operations that Riak can execute, and all of the Cluster will receive an usage peak.
+    def all_keys
+      @cluster.client.list_keys(@name)
+    end
+
     # Searches for a key in this bucket and returns an RpbFetchResp compatible class or hash.
     #
     # @param key [String] the key to search in the bucket.
