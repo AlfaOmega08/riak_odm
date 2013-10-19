@@ -4,6 +4,9 @@ module RiakOdm
     #
     # @param id [String|Hash] the id(s) to search in the bucket
     # @param options [Hash] any possible fetch parameter for Riak (see <tt>ProtocolBuffers::Client#fetch</tt>).
+    #
+    # If +id+ is an Array, not_found documents are set as +nil+ in the returning Array.
+    # If +id+ is a single String or Integer or other identifier, and the document is not found, +nil+ is returned.
     def find(id, options = {})
       if id.is_a? Array
         id.map { |id| find(id, options) }
@@ -15,6 +18,16 @@ module RiakOdm
         else
           nil
         end
+      end
+    end
+
+    # Same as <tt>#find</tt>. Raises a DocumentNotFound exception whenever a document is not found.
+    # RiakOdm::Errors::DocumentNotFound are automatically handled by Rails to report a 404!
+    def find!(id, options = {})
+      if id.is_a? Array
+        id.map { |id| find!(id, options) }
+      else
+        find(id, options) or raise RiakOdm::Errors::DocumentNotFound
       end
     end
 
