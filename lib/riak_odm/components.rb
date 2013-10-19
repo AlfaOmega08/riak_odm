@@ -14,7 +14,7 @@ module RiakOdm
       extend ActiveModel::Callbacks
       extend Finders
 
-      define_model_callbacks :save, :validation, :destroy
+      define_model_callbacks :validation, :save, :create, :update, :destroy
     end
   end
 end

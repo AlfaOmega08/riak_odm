@@ -34,18 +34,24 @@ module RiakOdm
     def save
       return false unless run_callbacks(:validation) { valid? }
 
-      if new_record?
-        # Prevent sibling creation just because you
-        options = { if_none_match: true, content_type: @local_content_type }
-        self.class.bucket.store(@id, content_as_string, {}, {}, options)
+      run_callbacks(:save) do
+        if new_record?
+          run_callbacks(:create) do
+            # Prevent sibling creation just because you
+            options = { if_none_match: true, content_type: @local_content_type }
+            self.class.bucket.store(@id, content_as_string, {}, {}, options)
 
-        @new_record = false
-      else
-        options = { if_not_modified: true, content_type: @local_content_type, vclock: @vclock }
-        self.class.bucket.store(@id, content_as_string, {}, {}, options)
+            @new_record = false
+            true
+          end
+        else
+          run_callbacks(:update) do
+            options = { if_not_modified: true, content_type: @local_content_type, vclock: @vclock }
+            self.class.bucket.store(@id, content_as_string, {}, {}, options)
+            true
+          end
+        end
       end
-
-      true
     end
 
     def update_attributes(attributes = {})
