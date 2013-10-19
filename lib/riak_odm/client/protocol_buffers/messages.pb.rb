@@ -203,6 +203,10 @@ module RiakOdm
           optional :uint32, :n_val, 12
         end
 
+        class RpbDelResp < ::ProtocolBuffers::Message
+
+        end
+
         class RpbListBucketsReq < ::ProtocolBuffers::Message
           optional :uint32, :timeout, 1
           optional :bool, :stream, 2
@@ -329,7 +333,7 @@ module RiakOdm
 
         MESSAGE_CLASSES = [
             RpbErrorResp, nil, nil, nil, RpbGetClientIdResp, RpbSetClientIdReq, nil, nil,
-            RpbGetServerInfoResp, RpbGetReq, RpbGetResp, RpbPutReq, RpbPutResp, RpbDelReq, nil, RpbListBucketsReq,
+            RpbGetServerInfoResp, RpbGetReq, RpbGetResp, RpbPutReq, RpbPutResp, RpbDelReq, RpbDelResp, RpbListBucketsReq,
             RpbListBucketsResp, RpbListKeysReq, RpbListKeysResp, RpbGetBucketReq, RpbGetBucketResp, RpbSetBucketReq, nil, RpbMapRedReq,
             RpbMapRedResp, RpbIndexReq, RpbIndexResp, RpbSearchQueryReq, RpbSearchQueryResp
         ]

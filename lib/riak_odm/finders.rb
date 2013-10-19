@@ -8,7 +8,13 @@ module RiakOdm
       if id.is_a? Array
         id.map { |id| find(id, options) }
       else
-        self.bucket.find(id, options)
+        result = self.bucket.find(id, options)
+        if result
+          document = self.allocate
+          document.initialize_from_rpb_get_resp id, result
+        else
+          nil
+        end
       end
     end
 
