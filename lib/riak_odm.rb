@@ -7,6 +7,7 @@ require 'active_support/time_with_zone'
 require 'active_model'
 require 'simple_uuid'
 
+require 'riak_odm/associations'
 require 'riak_odm/attributes'
 require 'riak_odm/bucket'
 require 'riak_odm/client'

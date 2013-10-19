@@ -6,6 +6,7 @@ module RiakOdm
       extend ActiveModel::Naming
       include ActiveModel::Conversion
       include ActiveModel::Validations
+      include Associations
       include Attributes
       include Fields
       include Indexes
