@@ -32,6 +32,8 @@ module RiakOdm
     end
 
     def save
+      return false unless run_callbacks(:validation) { valid? }
+
       if new_record?
         # Prevent sibling creation just because you
         options = { if_none_match: true, content_type: @local_content_type }
@@ -42,18 +44,14 @@ module RiakOdm
         options = { if_not_modified: true, content_type: @local_content_type, vclock: @vclock }
         self.class.bucket.store(@id, content_as_string, {}, {}, options)
       end
+
+      true
     end
 
     def update_attributes(attributes = {})
       return false if @local_content_type != 'application/json'
       @attributes = attributes
       save
-    end
-
-    def destroy
-      return if !persisted?
-      self.class.bucket.destroy(@id)
-      @destroyed = true
     end
 
     def initialize_from_rpb_get_resp(id, response)

@@ -10,7 +10,7 @@ module RiakOdm
 
     def delete(options = {})
       return false unless persisted?
-      self.class.bucket.destroy(@id)
+      self.class.bucket.destroy(@id, options)
       @destroyed = true
       true
     end
