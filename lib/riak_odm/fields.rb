@@ -15,9 +15,19 @@ module RiakOdm
       end
 
       def create_accessors(name, options = {})
-        define_method("#{name}") { read_attribute(name) }
-        define_method("#{name}=") { |value| write_attribute(name, value) }
-        define_method("#{name}?") { read_attribute(name) == true }
+        class_eval <<-END, __FILE__, __LINE__
+          def #{name}
+            read_attribute(#{name.inspect})
+          end
+
+          def #{name}=(value)
+            write_attribute(#{name.inspect}, value)
+          end
+
+          def #{name}?
+            read_attribute(#{name.inspect}) == true
+          end
+        END
       end
     end
   end
