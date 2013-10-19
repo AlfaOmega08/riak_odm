@@ -36,20 +36,9 @@ module RiakOdm
 
       run_callbacks(:save) do
         if new_record?
-          run_callbacks(:create) do
-            # Prevent sibling creation just because you
-            options = { if_none_match: true, content_type: @local_content_type }
-            self.class.bucket.store(@id, content_as_string, {}, {}, options)
-
-            @new_record = false
-            true
-          end
+          save_create
         else
-          run_callbacks(:update) do
-            options = { if_not_modified: true, content_type: @local_content_type, vclock: @vclock }
-            self.class.bucket.store(@id, content_as_string, {}, {}, options)
-            true
-          end
+          save_update
         end
       end
     end
@@ -79,6 +68,25 @@ module RiakOdm
         @attributes.to_json
       else
         self.content
+      end
+    end
+
+    def save_create
+      run_callbacks(:create) do
+        # Prevent sibling creation just because you
+        options = { if_none_match: true, content_type: @local_content_type }
+        self.class.bucket.store(@id, content_as_string, {}, {}, options)
+
+        @new_record = false
+        true
+      end
+    end
+
+    def save_update
+      run_callbacks(:update) do
+        options = { if_not_modified: true, content_type: @local_content_type, vclock: @vclock }
+        self.class.bucket.store(@id, content_as_string, {}, {}, options)
+        true
       end
     end
 

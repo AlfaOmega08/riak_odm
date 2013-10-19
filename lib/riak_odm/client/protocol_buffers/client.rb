@@ -185,25 +185,24 @@ module RiakOdm
         # @todo Performance testing shows that without IO.select this method is faster.
         #   Need to find a better timeout solution...
         def receive_response(timeout = nil)
-          if IO.select([@sock], nil, nil, timeout || @timeout).nil?
-            raise RiakOdm::Errors::Timeout
-          end
+          raise RiakOdm::Errors::Timeout unless IO.select([@sock], nil, nil, timeout || @timeout)
 
-          length = @sock.recv(4).unpack("N")[0] - 1
+          length = decode_length @sock.recv(4)
           message_type = @sock.recv(1).ord
+          message = ''
 
           if length > 0
             message = @sock.recv(length)
-          else
-            message = ''
           end
 
-          if message_type == Messages::ERROR_RESP
-            raise RiakOdm::Errors::ServerError
-          end
+          raise RiakOdm::Errors::ServerError if message_type == Messages::ERROR_RESP
 
           Messages::MESSAGE_CLASSES[message_type].parse message
         end
+      end
+
+      def decode_length(len)
+        len.unpack("N")[0] - 1
       end
     end
   end
