@@ -18,7 +18,47 @@ Or install it yourself as:
 
 ## Usage
 
-TODO.
+It can be used in Rails and non-rails Applications. When using Rails, create your models in the app/models directory.
+
+First of all, create a configuration file in config/riak_odm.yml like this:
+
+    bucket:
+      -
+        host: 10.12.13.1
+        port: 8087
+      -
+        host: 10.12.13.2
+        port: 8087
+      -
+        host: 10.12.13.3
+        port: 8087
+
+You must specify the ProtocolBuffers port. riak_odm only supports the PB interface at the moment.
+
+Every model need to include RiakOdm::Document. Riak can store any kind of binary data. By default riak_odm assumes
+'application/json' Content-Type. This is the only type that supports fields. If you need to specify a different
+Content-Type use the content_type method.
+
+    class Picture
+      include RiakOdm::Document
+
+      content_type 'image/jpeg'
+    end
+
+The content_type will be set for all new documents. Documents fetched from the cluster will respect the reported
+Content-Type. Also you can set per-document content_type with the same method.
+
+'application/json' documents support fields:
+
+    class Person
+      include RiakOdm::Document
+
+      #content_type 'application/json'     This is default
+      field :name
+      field :surname
+    end
+
+Now you can use the name, name=, surname and surname= accessors.
 
 ## Contributing
 
